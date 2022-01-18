@@ -26,10 +26,15 @@
 ***Total Score 85***
 
 ***
+
 Small Grid: 17/25 wins - 28 points
+
 Medium Classic: 10/25 wins - 35 points
+
 Excellence: 3251 game points - 16 points
+
 Code quality: 3 points
+
 Code Comments: 3 points
 
 ***
