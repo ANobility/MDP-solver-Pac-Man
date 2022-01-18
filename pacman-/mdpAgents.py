@@ -323,14 +323,24 @@ class MDPAgent(Agent):
     # Part of the MDP decision-making process
     # Get the maximum utility point around the point (x, y) on a map
     def getNeighborMaxUtility(self, x, y, a_map):
-        value = []
-        for point in map(lambda vector: (vector[0] + x, vector[1] + y), [(1, 0), (-1, 0), (0, 1), (0, -1)]):
-            fooward = a_map.getValue(point[0], point[1])
-            if fooward != '%':
-                value.append(fooward)
-        maxvaule = max(value)
+        near_pos = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        utility_of_origin = a_map.getValue(x, y)
+        max_reward = utility_of_origin
+        for point in map(lambda vector: (vector[0] + x, vector[1] + y), near_pos):
+            forward = a_map.getValue(point[0], point[1])
+            if forward == '%':
+                continue
+            else:
+                total_reward = 0.8 * forward
+                side_points = self.sideNeighbor(x, y, (point[0] - x, point[1] - y))
+                for side_point in side_points:
+                    side = a_map.getValue(side_point[0], side_point[1])
+                    total_reward += 0.1 * (utility_of_origin if side == '%' else side)
 
-        return maxvaule
+                if total_reward > max_reward:
+                    max_reward = total_reward
+
+        return max_reward
 
     def getAction(self, state):
         # Gets the current ghost state, subtracting the ghost position in the previous state to get the direction the
